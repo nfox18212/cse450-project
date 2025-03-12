@@ -1,0 +1,3 @@
+[submodule "ksalu"]
+	path = ksalu
+	url = git@github.com:nfox18212/ksalu.git
