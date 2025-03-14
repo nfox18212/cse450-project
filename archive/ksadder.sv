@@ -19,7 +19,6 @@
    */
    genvar i;
    generate
-   
    for (i = 0; i < N; i++) begin
       
       if (i == 0) begin
@@ -29,15 +28,15 @@
 
       end
 
-      
-
+      /*
+      * This is still serial, not parallel.  Can rework to make 16 half-adders
+      */
 
    end
-
-
    endgenerate
-
  endmodule;
+
+   
 
  module calculatePG(a, b, p, g);
 
@@ -51,9 +50,8 @@
 
  endmodule
 
- module genPG
- #(parameter N)
- (input reg [N-1:0] a, b, output wire [N-1:0] p, g);
+
+ module genPG(input reg a, b, output wire p, g);
    // returns an array of all of the generate and propogate bits
 
    // generates 4 modules to calculate one propogate bit or generate
@@ -69,3 +67,11 @@
 
 
  endmodule
+
+ module q(             //carry propagation and generation module
+      input a,b,g,f,
+      output s,c
+      );
+  assign s=a&b;
+  assign c=g|(b&f);
+endmodule
