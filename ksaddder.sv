@@ -10,8 +10,6 @@
     input  reg  cin;
     output wire cout; 
 
-      
-
  endmodule;
 
  module calculatePG(a, b, p, g);
@@ -21,22 +19,24 @@
     output wire p;
     output wire g;
 
-    assign g = a and b;
-    assign p = a xor b;
+   assign g = a & b;
+   assign p = a ^ b;
 
  endmodule
 
- module genPG(input [3:0] a, b, output [3:0] p, g);
+ module genPG
+ #(parameter N = 4)
+ (input reg [N-1:0] a, b, output wire [N-1:0] p, g);
 
    // generates 4 modules to calculate one propogate bit or generate
    // bit for each a and b
    // gonna do 4 bits then try to scale to 16
    genvar i;
    generate
-      for (i=0; i < 3; i++) begin
+      for (i=0; i < N; i++) begin
 
-         calculatePG pg0 (a[i], b[i], ps[i], gs[i]);
-
+        calculatePG pg (.a(a[i]), .b(b[i]), .p(p[i]), .g(g[i]));
+        
       end
    endgenerate
 
