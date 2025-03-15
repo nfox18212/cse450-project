@@ -1,5 +1,5 @@
 CC := iverilog
-CFLAGS := -g2005-sv 
+CFLAGS := -g2012 -Wall -Werror
 TARGET := a.vvp
 # top refers to top level module, usually the test bench
 TOP := tb
