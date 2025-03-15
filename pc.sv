@@ -19,14 +19,14 @@
     		pc_next - Address for next instruction. Passed to the instruction memory module. 
 */
 module ProgramCounter(
-  input logic clock,				// input clock 
-  input logic [15:0] pc_current,	// previous pc, needs to be incremented by 2
-  input logic [15:0] branchOff,		// sign-extended and left shifted 1 bit branch offset
-  input logic flag_branch,			// branch flag
-  input logic aluZero,				// zero output from ALU
-  input logic [15:0] jumpAddr,		// fully calculated jump address
-  input logic flag_jump, 			// jump flag
-  output logic [15:0] pc_next		// next address to send to the instruction memory
+  input logic clock,				    // input clock 
+  input logic [15:0] pc_current,	    // previous pc, needs to be incremented by 2
+  input logic signed [15:0] branchOff,	// sign-extended and left shifted 1 bit branch offset
+  input logic flag_branch,			    // branch flag
+  input logic aluZero,				    // zero output from ALU
+  input logic [15:0] jumpAddr,		    // fully calculated jump address
+  input logic flag_jump, 			    // jump flag
+  output logic [15:0] pc_next		    // next address to send to the instruction memory
 );
   
   always @(posedge clock) begin
@@ -35,7 +35,7 @@ module ProgramCounter(
     nextAddr = pc_current + 2;
     
     // Calculate the full branch address from the offset.
-    logic [15:0] branchAddr;
+    logic signed [15:0] branchAddr;
     branchAddr = nextAddr + branchOff;
     
     // Branch instruction MUX logic. If 1, select branchAddr. If 0, select pc + 2.
