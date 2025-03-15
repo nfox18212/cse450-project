@@ -12,7 +12,7 @@
             branchOff	- Sign-extended and left shifted 1 bit branch offset
             flag_branch	- Branch control flag. Needs to be AND with aluZero to determine whether or not to branch. 
             aluZero 	- ALU Zero output. Needs to be AND with flag_branch to determine whether or not to branch.
-            jumpAddr	- Jump address after shifting lower 12 bits by 1 bit and higher 4 bits set by pc + 2.
+            jumpInstr	- Full 16-bit decoded instruction.
             flag_jump	- Jump control flag. Determines whether or not to use calculated jump address.
             
     outputs:
@@ -24,7 +24,7 @@ module ProgramCounter(
   input logic signed [15:0] branchOff,	// sign-extended and left shifted 1 bit branch offset
   input logic flag_branch,			    // branch flag
   input logic aluZero,				    // zero output from ALU
-  input logic [15:0] jumpAddr,		    // fully calculated jump address
+  input logic [15:0] jumpInstr,		    // decoded instruction
   input logic flag_jump, 			    // jump flag
   output logic [15:0] pc_next		    // next address to send to the instruction memory
 );
@@ -43,6 +43,10 @@ module ProgramCounter(
     branchMux = flag_branch & aluZero;
     nextAddr = (branchMux) ? branchAddr : nextAddr;
     
+    // Calculate full jump address
+    logic [15:0] jumpAddr;
+    jumpAddr = {nextAddr[15:12], (jumpInstr[11:0] << 1)}
+
     // Jump instruction MUX logic. If 1, select jumpAddr. If 0, select result from branch MUX.
     nextAddr = (flag_jump) ? jumpAddr : nextAddr;
     
