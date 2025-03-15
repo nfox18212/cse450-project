@@ -34,7 +34,7 @@ module Sixteenbit_ADDI (
   input  logic [7:0] Immediate,
   output logic [15:0] Answer
 );
-  
+  // i feel like this is a stupid way of going about this.  Can't we
   assign Answer = A + {{12{Immediate[7]}}, Immediate};
 endmodule
 
@@ -73,6 +73,6 @@ endmodule
 module fadder(input logic a, b, c_in, output logic sum, carry_out);
 
     // simple fulladder implementation
-    assign c_out = (a & b) + c_in & (a ^ b);
+    assign c_out = (a & b) | c_in & (a ^ b);
     assign sum = a ^ b ^ c_in;
 endmodule
